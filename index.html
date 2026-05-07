@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora Glassmorphism Red</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Story 2.4: Google Fonts — Share Tech Mono para estética digital -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Wrapper: contém orbs animados + calculadora -->
+  <div class="calculator-wrapper">
+
+    <!-- Orbs de fundo (serão estilizados no Epic 2) -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <!-- Calculadora principal -->
+    <div class="calculator">
+
+      <!-- Display: expressão + resultado + backspace -->
+      <div class="display">
+        <button data-action="backspace" data-value="" class="btn-backspace" aria-label="Apagar">⌫</button>
+        <div id="expression"></div>
+        <div id="result">0</div>
+      </div>
+
+      <!-- Grid de botões: 4 colunas × 5 linhas = 19 botões -->
+      <div class="buttons">
+
+        <!-- Linha 1: funções especiais + operador -->
+        <button data-action="clear" data-value="">AC</button>
+        <button data-action="sign" data-value="">+/−</button>
+        <button data-action="percent" data-value="">%</button>
+        <button data-action="operator" data-value="/">÷</button>
+
+        <!-- Linha 2: dígitos 7-9 + operador -->
+        <button data-action="digit" data-value="7">7</button>
+        <button data-action="digit" data-value="8">8</button>
+        <button data-action="digit" data-value="9">9</button>
+        <button data-action="operator" data-value="*">×</button>
+
+        <!-- Linha 3: dígitos 4-6 + operador -->
+        <button data-action="digit" data-value="4">4</button>
+        <button data-action="digit" data-value="5">5</button>
+        <button data-action="digit" data-value="6">6</button>
+        <button data-action="operator" data-value="-">−</button>
+
+        <!-- Linha 4: dígitos 1-3 + operador -->
+        <button data-action="digit" data-value="1">1</button>
+        <button data-action="digit" data-value="2">2</button>
+        <button data-action="digit" data-value="3">3</button>
+        <button data-action="operator" data-value="+">+</button>
+
+        <!-- Linha 5: 0 (span 2) + decimal + igual -->
+        <button data-action="digit" data-value="0" class="btn-zero">0</button>
+        <button data-action="decimal" data-value=".">.</button>
+        <button data-action="equals" data-value="">=</button>
+
+      </div><!-- /.buttons -->
+    </div><!-- /.calculator -->
+  </div><!-- /.calculator-wrapper -->
+
+  <script src="script.js"></script>
+</body>
+</html>

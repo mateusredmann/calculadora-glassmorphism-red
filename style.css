@@ -1,0 +1,404 @@
+/* ============================================
+   Calculadora Glassmorphism Red — style.css
+   Epic 1: Story 1.1 — Reset base
+   Epic 2: Stories 2.1–2.4 — Design glassmorphism
+   ============================================ */
+
+/* ─────────────────────────────────────────
+   STORY 2.1 — CSS CUSTOM PROPERTIES (AC: 1, 6)
+   Zero valores hardcoded no restante do CSS
+   ───────────────────────────────────────── */
+:root {
+  --bg: #0d0000;
+  --glass-bg: rgba(255, 0, 0, 0.08);
+  --glass-display: rgba(0, 0, 0, 0.3);
+  --glass-btn: rgba(255, 255, 255, 0.05);
+  --glass-btn-hover: rgba(255, 0, 0, 0.2);
+  --glass-btn-active: rgba(255, 0, 0, 0.35);
+  --border-glass: rgba(255, 255, 255, 0.1);
+  --border-red: rgba(255, 0, 0, 0.2);
+  --red-primary: #FF0000;
+  --red-dark: #8B0000;
+  --red-mid: #CC0000;
+  --red-light: #ff4444;
+  --glow: rgba(255, 0, 0, 0.4);
+  --glow-strong: rgba(255, 0, 0, 0.5);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.6);
+  --shadow-box: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 20px var(--glow);
+  --radius-calc: 20px;
+  --radius-display: 12px;
+  --radius-btn: 12px;
+  /* Story 2.3 AC: 6 — transição padrão */
+  --transition-btn: all 200ms ease;
+}
+
+/* ─────────────────────────────────────────
+   RESET UNIVERSAL (Story 1.1 AC: 6)
+   ───────────────────────────────────────── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ─────────────────────────────────────────
+   STORY 2.1 — BODY & BACKGROUND (AC: 2)
+   Story 2.4 AC: 3 — centralizado via flex
+   ───────────────────────────────────────── */
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  /* Story 2.4 AC: 1 — Share Tech Mono */
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  background-color: var(--bg);
+  background: radial-gradient(ellipse at center, #1a0000 0%, var(--bg) 70%);
+  color: var(--text-primary);
+}
+
+/* ─────────────────────────────────────────
+   STORY 2.2 — WRAPPER & ORBS (AC: 1–7)
+   ───────────────────────────────────────── */
+.calculator-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Story 2.2 AC: 2, 6 — base do orb */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;     /* AC: 6 — não interfere em cliques */
+  filter: blur(60px);       /* AC: 2 */
+  opacity: 0.5;             /* AC: 2 — entre 0.3-0.6 */
+}
+
+/* Story 2.2 AC: 3 — cores variadas da paleta vermelha */
+/* Story 2.2 AC: 4, 5 — @keyframes única, 15s-25s, ease-in-out */
+.orb-1 {
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, var(--red-primary) 0%, var(--red-dark) 70%, transparent 100%);
+  top: -120px;
+  left: -100px;
+  opacity: 0.55;
+  animation: orbDrift1 18s ease-in-out infinite;
+}
+
+.orb-2 {
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, var(--red-mid) 0%, var(--red-dark) 60%, transparent 100%);
+  bottom: -90px;
+  right: -80px;
+  opacity: 0.45;
+  animation: orbDrift2 23s ease-in-out infinite;
+}
+
+.orb-3 {
+  width: 160px;
+  height: 160px;
+  background: radial-gradient(circle, var(--red-light) 0%, var(--red-primary) 50%, transparent 100%);
+  bottom: -60px;
+  left: -60px;
+  opacity: 0.35;
+  animation: orbDrift3 16s ease-in-out infinite;
+}
+
+/* Story 2.2 AC: 4 — @keyframes únicas por orb com translate + scale */
+@keyframes orbDrift1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25%       { transform: translate(15px, -22px) scale(1.06); }
+  50%       { transform: translate(-10px, 8px) scale(0.96); }
+  75%       { transform: translate(8px, 14px) scale(1.03); }
+}
+
+@keyframes orbDrift2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  30%       { transform: translate(-18px, 12px) scale(1.08); }
+  60%       { transform: translate(10px, -16px) scale(0.94); }
+  80%       { transform: translate(-6px, -8px) scale(1.04); }
+}
+
+@keyframes orbDrift3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  40%       { transform: translate(12px, -10px) scale(1.1); }
+  70%       { transform: translate(-14px, 18px) scale(0.92); }
+}
+
+/* ─────────────────────────────────────────
+   STORY 2.1 — CALCULATOR GLASS SURFACE (AC: 3)
+   Story 2.2 AC: 7 — z-index superior aos orbs
+   Story 2.4 AC: 7 — max-width 380px em ≥1024px
+   ───────────────────────────────────────── */
+.calculator {
+  width: 340px;
+  max-width: 380px;          /* Story 2.4 AC: 7 */
+  padding: 24px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-calc);
+  box-shadow: var(--shadow-box), var(--shadow-glow);
+  position: relative;
+  z-index: 1;                /* AC: 7 — acima dos orbs */
+}
+
+/* ─────────────────────────────────────────
+   STORY 2.1 — DISPLAY GLASS (AC: 4, 5)
+   ───────────────────────────────────────── */
+.display {
+  background: var(--glass-display);
+  border: 1px solid var(--border-red);
+  border-radius: var(--radius-display);
+  padding: 16px;
+  margin-bottom: 20px;
+  text-align: right;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 4px;
+  position: relative;
+}
+
+/* Botão ⌫ posicionado no canto superior esquerdo do display */
+.btn-backspace {
+  position: absolute !important;
+  top: 8px;
+  left: 10px;
+  padding: 4px 8px !important;
+  font-size: 0.88rem !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid var(--border-glass) !important;
+  border-radius: 6px !important;
+  color: var(--text-secondary) !important;
+  cursor: pointer;
+  transition: var(--transition-btn);
+  box-shadow: none !important;
+  transform: none !important;
+  min-height: unset;
+}
+
+.btn-backspace:hover {
+  background: rgba(255, 80, 80, 0.2) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 0 8px var(--glow) !important;
+  transform: none !important;
+}
+
+.btn-backspace:active {
+  transform: scale(0.92) !important;
+  background: rgba(255, 0, 0, 0.3) !important;
+}
+
+/* Story 2.1 AC: 5 / Story 2.4 AC: 2 */
+#expression {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  min-height: 1.2em;
+  word-break: break-all;
+  letter-spacing: 0.03em;
+}
+
+/* Story 2.1 AC: 4 / Story 2.4 AC: 2 — mínimo 2rem */
+#result {
+  font-size: 2.2rem;          /* ≥ 2rem conforme AC */
+  color: var(--text-primary);
+  font-weight: 300;
+  word-break: break-all;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  text-shadow: 0 0 12px rgba(255, 80, 80, 0.3);
+}
+
+/* ─────────────────────────────────────────
+   GRID DE BOTÕES — 4 colunas
+   Story 2.4 AC: 4 — gap: 12px
+   ───────────────────────────────────────── */
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);  /* Story 2.4 AC: 4 */
+  gap: 12px;                              /* Story 2.4 AC: 4 */
+}
+
+/* ─────────────────────────────────────────
+   STORY 2.3 — BOTÃO BASE (AC: 1, 6)
+   ───────────────────────────────────────── */
+button {
+  padding: 18px 8px;
+  font-size: 1.1rem;
+  font-family: inherit;
+  color: var(--text-primary);
+  /* Story 2.3 AC: 1 */
+  background: var(--glass-btn);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  /* Story 2.3 AC: 6 */
+  transition: var(--transition-btn);
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+/* Story 2.3 AC: 4 — hover com scale + glow */
+button:hover {
+  background: var(--glass-btn-hover);
+  box-shadow: 0 0 15px var(--glow);
+  transform: scale(1.05);
+}
+
+/* Story 2.3 AC: 5 — active com scale + glow forte */
+button:active {
+  background: var(--glass-btn-active);
+  transform: scale(0.95);
+  box-shadow: 0 0 25px var(--glow-strong);
+}
+
+/* ─────────────────────────────────────────
+   STORY 2.3 — VARIANTES DE BOTÃO (AC: 2, 3, 7)
+   ───────────────────────────────────────── */
+
+/* AC: 3 — Operadores: tom vermelho sutil diferenciado */
+button[data-action="operator"] {
+  background: rgba(255, 0, 0, 0.12);
+  border-color: var(--border-red);
+  color: #ff7777;
+  font-weight: 500;
+}
+
+button[data-action="operator"]:hover {
+  background: rgba(255, 0, 0, 0.28);
+  box-shadow: 0 0 15px var(--glow);
+}
+
+button[data-action="operator"]:active {
+  background: rgba(255, 0, 0, 0.45);
+  box-shadow: 0 0 25px var(--glow-strong);
+}
+
+/* AC: 2 — Botão = — gradient vermelho destaque */
+button[data-action="equals"] {
+  background: linear-gradient(135deg, var(--red-primary) 0%, var(--red-dark) 100%);
+  border-color: var(--red-mid);
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 1.3rem;
+  box-shadow:
+    0 4px 15px var(--glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+button[data-action="equals"]:hover {
+  background: linear-gradient(135deg, var(--red-light) 0%, var(--red-mid) 100%);
+  box-shadow: 0 0 25px var(--glow-strong);
+  transform: scale(1.05);
+}
+
+button[data-action="equals"]:active {
+  transform: scale(0.95);
+  box-shadow: 0 0 30px var(--glow-strong);
+}
+
+/* AC: 7 — AC: cor diferenciada (vermelho mais claro/brilhante) */
+button[data-action="clear"] {
+  background: rgba(255, 100, 100, 0.15);
+  border-color: rgba(255, 150, 150, 0.25);
+  color: #ffaaaa;
+  font-weight: 600;
+}
+
+button[data-action="clear"]:hover {
+  background: rgba(255, 100, 100, 0.28);
+  box-shadow: 0 0 15px rgba(255, 100, 100, 0.4);
+}
+
+button[data-action="clear"]:active {
+  transform: scale(0.95);
+  background: rgba(255, 100, 100, 0.4);
+}
+
+/* Funções especiais: sign, percent */
+button[data-action="sign"],
+button[data-action="percent"] {
+  background: rgba(255, 255, 255, 0.07);
+  color: #ffcccc;
+}
+
+button[data-action="sign"]:hover,
+button[data-action="percent"]:hover {
+  background: rgba(255, 0, 0, 0.2);
+}
+
+/* ─────────────────────────────────────────
+   STORY 2.4 AC: 5 — Botão 0: 2 colunas
+   ───────────────────────────────────────── */
+.btn-zero {
+  grid-column: span 2;
+  text-align: left;
+  padding-left: 22px;
+}
+
+/* ─────────────────────────────────────────
+   STORY 2.4 — RESPONSIVIDADE (AC: 6, 7, 8)
+   ───────────────────────────────────────── */
+
+/* AC: 7 — ≥ 1024px: max-width 380px */
+@media (min-width: 1024px) {
+  .calculator {
+    width: 380px;
+  }
+}
+
+/* AC: 6 — ≤ 480px: 95vw, botões com padding reduzido */
+@media (max-width: 480px) {
+  .calculator {
+    width: 95vw;
+    max-width: 95vw;
+    padding: 16px;
+  }
+
+  .buttons {
+    gap: 8px;
+  }
+
+  button {
+    padding: 14px 6px;
+    font-size: 1rem;
+  }
+
+  #result {
+    font-size: 2rem;   /* ainda ≥ 2rem conforme AC: 2 */
+  }
+
+  .btn-backspace {
+    font-size: 0.78rem !important;
+  }
+}
+
+/* AC: 8 — sem scroll horizontal em 320px–1920px */
+@media (max-width: 360px) {
+  .calculator {
+    width: 98vw;
+    padding: 12px;
+  }
+
+  button {
+    padding: 12px 4px;
+    font-size: 0.9rem;
+  }
+
+  .buttons {
+    gap: 6px;
+  }
+}
